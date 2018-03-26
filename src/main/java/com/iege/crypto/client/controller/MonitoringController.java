@@ -4,6 +4,7 @@ import com.iege.crypto.client.service.MonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/monitoring")
@@ -21,12 +22,12 @@ public class MonitoringController {
         model.addAttribute("monitorings", monitoringService.getAllUserMonitorings());
         return "monitoring/list";
     }
-//
-//    @RequestMapping("/show/{id}")
-//    public String showCustomer(@PathVariable Integer id, Model model){
-//        model.addAttribute("monitoring", customerService.getById(id));
-//        return "monitoring/show";
-//    }
+
+    @RequestMapping("/show/{id}")
+    public String showCustomer(@PathVariable Integer id, Model model){
+        model.addAttribute("monitoring", monitoringService.getById(id));
+        return "monitoring/show";
+    }
 //
 //    @RequestMapping("/edit/{id}")
 //    public String edit(@PathVariable Integer id, Model model){

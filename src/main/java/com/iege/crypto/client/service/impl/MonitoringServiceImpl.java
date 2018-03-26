@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,5 +23,10 @@ public class MonitoringServiceImpl implements MonitoringService {
     public List<Monitoring> getAllUserMonitorings() {
         SecUserDetails secUserDetails = (SecUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Arrays.asList(restTemplate.getForEntity(restApiUrl + "monitorings?idUser=" + secUserDetails.getUser().getId(), Monitoring[].class).getBody());
+    }
+
+    @Override
+    public Monitoring getById(Integer id) {
+        return getAllUserMonitorings().get(0);
     }
 }
