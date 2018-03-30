@@ -9,18 +9,48 @@
 
         <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
 
+        <!-- JQuery -->
+        <script type="text/javascript" th:src="@{/js/jquery-3.2.0.min.js}"></script>
+        <!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
+        <script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+
+        <!--Import materialize.css-->
+        <!--<link type="text/css" rel="stylesheet" th:href="@{/css/materialize.min.css}" media="screen,projection"/>-->
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+        <script>
+              $(document).ready(function() {
+
+              $('#autocomplete-input').devbridgeAutocomplete({
+                  serviceUrl: '/suggestion',
+                  paramName: 'searchstr',
+                  minChars: 1,
+                  autoSelectFirst: true,
+              });
+
+            });
+         </script>
+
     </head>
     <body>
         <div class="container">
 
             <h2>Monitoring Details</h2>
             <div>
+                <form id="autocompleteform" class="form-horizontal" role="form" th:action="@{/login}" method="post">
+                    <input type="text" id="autocomplete-inpu" class="autocomplete"/>
+                    <input id="form1_submit" name="form1_submit" value="OK!" type="submit" />
+                    <input type="hidden" name="cms-form" value="Y3VycmVuY3k6cGVyY2hfc2hvcDovdGVtcGxhdGVzL3Nob3AvY3VycmVuY2llcy9jdXJyZW5jeV9mb3JtLmh0bWw6MTQ2MDk3NDgwNg==" />
+                </form>
                 <form class="form-horizontal" th:object="${monitoring}" th:action="@{/monitoring/}" method="post">
                     <input type="hidden" th:field="*{id}"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">monitoring Name:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" th:field="*{cryptoCurrency.name}" placeholder="Start to type name"/>
+                            <input type="text" id="autocomplete-input" class="form-control" th:field="*{cryptoCurrency.name}" placeholder="Start to type name"/>
                         </div>
                     </div>
                     <div class="form-group">
