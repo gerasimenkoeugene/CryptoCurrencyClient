@@ -14,7 +14,6 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/activation/{userName}")
-    @ResponseBody
     public String getClientById(@PathVariable String userName){
         userService.activateUser(userName);
         return "/login";

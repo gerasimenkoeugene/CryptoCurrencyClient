@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class SuggestionWrapper {
 
-  List<Country> suggestions;
+  private List<CryptoCurrencyTag> suggestions;
 
-  public List<Country> getSuggestions() {
+  public List<CryptoCurrencyTag> getSuggestions() {
     return suggestions;
   }
 
-  public void setSuggestions(List<Country> suggestions) {
+  public void setSuggestions(List<CryptoCurrencyTag> suggestions) {
     this.suggestions = suggestions;
   }
 }

@@ -15,13 +15,9 @@ import javax.mail.internet.MimeMessage;
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
-    public JavaMailSender emailSender;
+    private JavaMailSender emailSender;
 
     public void sendActivationMessage(String to, String subject, String userName) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setTo(to);
-//        message.setSubject(subject);
-//        message.setText(text);
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);

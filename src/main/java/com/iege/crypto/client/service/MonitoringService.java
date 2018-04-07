@@ -7,4 +7,5 @@ import java.util.List;
 public interface MonitoringService {
     List<Monitoring> getAllUserMonitorings();
     Monitoring getById(Integer id);
+    void save(Monitoring monitoring);
 }

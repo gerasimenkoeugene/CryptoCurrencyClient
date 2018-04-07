@@ -29,4 +29,9 @@ public class MonitoringServiceImpl implements MonitoringService {
     public Monitoring getById(Integer id) {
         return getAllUserMonitorings().get(0);
     }
+
+    @Override
+    public void save(Monitoring monitoring) {
+        restTemplate.postForEntity(restApiUrl + "monitorings", monitoring, Monitoring.class);
+    }
 }

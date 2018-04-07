@@ -1,12 +1,15 @@
 package com.iege.crypto.client.wrapper;
 
-public class Country {
-  String value;
-  String data;
+import lombok.NoArgsConstructor;
 
-  public Country(String name) {
+@NoArgsConstructor
+public class CryptoCurrencyTag {
+  private String value;
+  private String data;
+
+  public CryptoCurrencyTag(String name, String data) {
     this.value = name;
-    this.data = "";
+    this.data = data;
   }
 
   public String getData() {

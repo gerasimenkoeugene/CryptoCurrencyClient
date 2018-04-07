@@ -1,10 +1,12 @@
 package com.iege.crypto.client.controller;
 
-import com.iege.crypto.client.wrapper.Country;
+import com.iege.crypto.client.converter.CryptoTagConverter;
+import com.iege.crypto.client.entity.CryptoCurrency;
+import com.iege.crypto.client.service.CryptoCurrencyService;
+import com.iege.crypto.client.wrapper.CryptoCurrencyTag;
 import com.iege.crypto.client.wrapper.SuggestionWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,53 +18,32 @@ import java.util.Locale;
 
 @Controller
 public class AutocompleteController {
+    private final CryptoCurrencyService cryptoCurrencyService;
+    private final CryptoTagConverter cryptoTagConverter;
 
-
-  // http://localhost:8080
-  // basic site
-  @GetMapping("/")
-  public String autocomplete(Model model) {
-    model.addAttribute("title", "autocomplete countries example");
-
-    return "autocomplete";
-  }
-
-
-// http://localhost:8080/suggestion?searchstr=car
-
-  /**
-   * the rest controller which is requested by the autocomplete input field
-   * instead of the countries here could also be made a DB request
-   */
-  @RequestMapping(value = "/suggestion", method = RequestMethod.GET, produces = "application/json")
-  @ResponseBody
-  public SuggestionWrapper autocompleteSuggestions(@RequestParam("searchstr") String searchstr) {
-    System.out.println("searchstr: " + searchstr);
-
-
-    ArrayList<Country> suggestions = new ArrayList<>();
-
-    String[] locales = Locale.getISOCountries();
-
-    for (String countryCode : locales) {
-
-      Locale obj = new Locale("", countryCode);
-      // add all countries to the arraylist
-      // if on the query string
-      if (obj.getDisplayCountry().toLowerCase().contains(searchstr.toLowerCase())) {
-        suggestions.add(new Country(obj.getDisplayCountry()));
-      }
+    @Autowired
+    public AutocompleteController(CryptoCurrencyService cryptoCurrencyService, CryptoTagConverter cryptoTagConverter) {
+        this.cryptoCurrencyService = cryptoCurrencyService;
+        this.cryptoTagConverter = cryptoTagConverter;
     }
 
-
-    // truncate the list to the first n, max 20 elements
-    int n = suggestions.size() > 20 ? 20 : suggestions.size();
-    List<Country> sulb = new ArrayList<>(suggestions.subList(0, n));
-
-    SuggestionWrapper sw = new SuggestionWrapper();
-    sw.setSuggestions(sulb);
-    return sw;
-  }
+    @ResponseBody
+    @RequestMapping(value = "/suggestion", method = RequestMethod.GET, produces = "application/json")
+    public SuggestionWrapper autocompleteSuggestions(@RequestParam("searchstr") String searchstr) {
+        ArrayList<CryptoCurrencyTag> suggestions = new ArrayList<>();
+        List<CryptoCurrency> cryptoCurrencies = cryptoCurrencyService.getCryptoCurrencyList();
+        for (CryptoCurrency currency : cryptoCurrencies) {
+            if (currency.getName().toLowerCase().contains(searchstr.toLowerCase())) {
+                suggestions.add(cryptoTagConverter.convert(currency));
+            }
+        }
+        // truncate the list to the first n, max 20 elements
+        int n = suggestions.size() > 20 ? 20 : suggestions.size();
+        List<CryptoCurrencyTag> subList = new ArrayList<>(suggestions.subList(0, n));
+        SuggestionWrapper sw = new SuggestionWrapper();
+        sw.setSuggestions(subList);
+        return sw;
+    }
 
 
 }
