@@ -104,6 +104,7 @@
             formatGroup: _formatGroup,
             delimiter: null,
             zIndex: 9999,
+            background: 'white',
             type: 'GET',
             noCache: false,
             onSearchStart: noop,
@@ -264,7 +265,8 @@
             $(that.suggestionsContainer).css({
                 'max-height': options.maxHeight + 'px',
                 'width': options.width + 'px',
-                'z-index': options.zIndex
+                'z-index': options.zIndex,
+                'background-color' : options.background
             });
         },
 

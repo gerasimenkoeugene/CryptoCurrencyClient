@@ -22,16 +22,32 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Override
     public List<Monitoring> getAllUserMonitorings() {
         SecUserDetails secUserDetails = (SecUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Arrays.asList(restTemplate.getForEntity(restApiUrl + "monitorings?idUser=" + secUserDetails.getUser().getId(), Monitoring[].class).getBody());
+        return Arrays.asList(restTemplate.getForEntity(restApiUrl + "monitorings/user?idUser=" + secUserDetails.getUser().getId(), Monitoring[].class).getBody());
     }
 
     @Override
-    public Monitoring getById(Integer id) {
-        return getAllUserMonitorings().get(0);
+    public Monitoring getById(String id) {
+        return restTemplate.getForEntity(restApiUrl + "monitorings?monitoringId=" +id, Monitoring.class).getBody();
     }
 
     @Override
     public void save(Monitoring monitoring) {
         restTemplate.postForEntity(restApiUrl + "monitorings", monitoring, Monitoring.class);
+    }
+
+    @Override
+    public void delete(String id) {
+        restTemplate.delete(restApiUrl + "monitorings?monitoringId=" +id);
+    }
+
+    @Override
+    public void turnOffMonitoring(String id) {
+        restTemplate.delete(restApiUrl + "monitorings/deactivate?monitoringId=" + id);
+    }
+
+    @Override
+    public void turnOffAllUserMonitorings() {
+        SecUserDetails secUserDetails = (SecUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        restTemplate.delete(restApiUrl + "monitorings/user/deactivate?idUser=" + secUserDetails.getUser().getId());
     }
 }

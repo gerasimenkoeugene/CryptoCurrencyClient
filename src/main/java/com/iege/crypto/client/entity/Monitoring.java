@@ -17,4 +17,5 @@ public class Monitoring {
     private String userEmail;
     private MonitoringCondition monitoringCondition;
     private Double conditionValue;
+    private Boolean active;
 }

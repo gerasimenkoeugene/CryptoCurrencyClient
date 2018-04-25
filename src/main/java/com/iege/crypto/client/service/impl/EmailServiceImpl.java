@@ -25,7 +25,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(subject);
             helper.setText("<html><body>" +
                     "Hello! You successfully registered in Crypto Service Viewer <p>" +
-                    " To confirm please click <a href=\"http://localhost:8080/activation/" + userName + "\">link</a>" +
+                    " To confirm please click <a href=\"http://localhost:8060/activation/" + userName + "\">link</a>" +
                     "</body></html>", true);
         } catch (MessagingException e) {
             e.printStackTrace();

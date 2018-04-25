@@ -10,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@RequestMapping("/monitoring")
+@RequestMapping({"/monitoring", "/", ""})
 @Controller
 public class MonitoringController {
     private final MonitoringService monitoringService;
@@ -34,29 +35,22 @@ public class MonitoringController {
         return "monitoring/list";
     }
 
-    @RequestMapping("/show/{id}")
-    public String showMonitoring(@PathVariable Integer id, Model model) {
-        model.addAttribute("monitoring", monitoringService.getById(id));
-        return "monitoring/show";
-    }
-
     @RequestMapping("/new")
     public String newMonitoring(Model model) {
         Monitoring monitoring = new Monitoring();
         monitoring.setCryptoCurrency(new CryptoCurrency());
         model.addAttribute(monitoring);
-        MonitoringCondition[] monitoringConditions = MonitoringCondition.values();
-        model.addAttribute("monitoringConditions", monitoringConditions);
+        model.addAttribute("monitoringConditions", MonitoringCondition.values());
         return "monitoring/monitoringform";
     }
 
     @RequestMapping("/load")
-    public String loadCryptoCurrency(@RequestParam String cryptoCurrencyName, Model model) {
-        Monitoring monitoring = new Monitoring();
+    public String loadCryptoCurrency(@RequestParam String cryptoCurrencyName, Model model, Monitoring monitoring) {
+        monitoring = StringUtils.isEmpty(monitoring.getId()) ? new Monitoring() : monitoringService.getById(monitoring.getId());
         monitoring.setCryptoCurrency(cryptoCurrencyService.getByName(cryptoCurrencyName));
+        monitoring.setActive(true);
         model.addAttribute(monitoring);
-        MonitoringCondition[] monitoringConditions = MonitoringCondition.values();
-        model.addAttribute("monitoringConditions", monitoringConditions);
+        model.addAttribute("monitoringConditions", MonitoringCondition.values());
         return "/monitoring/monitoringform";
     }
 
@@ -67,27 +61,31 @@ public class MonitoringController {
         monitoring.setUserEmail(secUserDetails.getUser().getEmail());
         if (monitoring.getId().equals("")) monitoring.setId(null);
         monitoringService.save(monitoring);
-        return "monitoring/list";
+        return "redirect:/monitoring/list";
     }
 
-//
-//    @RequestMapping("/edit/{id}")
-//    public String edit(@PathVariable Integer id, Model model){
-//        model.addAttribute("monitoring", customerService.getById(id));
-//        return "monitoring/monitoringform";
-//    }
-//
-//    @RequestMapping("/new")
-//    public String newCustomer(Model model){
-//        model.addAttribute("monitoring", new Customer());
-//        return "monitoring/monitoringform";
-//    }
-//
+    @RequestMapping("/edit/{id}")
+    public String edit(@PathVariable String id, Model model){
+        model.addAttribute("monitoring", monitoringService.getById(id));
+        model.addAttribute("monitoringConditions", MonitoringCondition.values());
+        return "monitoring/monitoringform";
+    }
 
-//
-//    @RequestMapping("/delete/{id}")
-//    public String delete(@PathVariable Integer id){
-//        customerService.delete(id);
-//        return "redirect:/customer/list";
-//    }
+    @RequestMapping("/delete/{id}")
+    public String delete(@PathVariable String id){
+        monitoringService.delete(id);
+        return "redirect:/monitoring/list";
+    }
+
+    @RequestMapping("/deactivate/{id}")
+    public String turnOffMonitoring(@PathVariable String id){
+        monitoringService.turnOffMonitoring(id);
+        return "redirect:/monitoring/list";
+    }
+
+    @RequestMapping("/deactivateAll")
+    public String turnOffAllUserMonitorings(){
+        monitoringService.turnOffAllUserMonitorings();
+        return "redirect:/monitoring/list";
+    }
 }

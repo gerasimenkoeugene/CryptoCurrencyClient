@@ -6,9 +6,9 @@
 
         <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
               rel="stylesheet" media="screen"/>
+        <style>.autocomplete-selected { background: lightblue; }</style>
 
         <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"></script>
-
         <!-- JQuery -->
         <script type="text/javascript" th:src="@{/js/jquery-3.2.0.min.js}"></script>
         <!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
@@ -21,7 +21,7 @@
               $('#autocomplete-input').devbridgeAutocomplete({
                   serviceUrl: '/suggestion',
                   paramName: 'searchstr',
-                  minChars: 1,
+                  minChars: 3,
                   autoSelectFirst: true,
               });
             });
@@ -33,12 +33,13 @@
 
             <h2>Monitoring Details</h2>
             <div>
-                <form class="form-horizontal" th:object="${cryptoCurrencyTag}" th:action="@{/monitoring/load}" method="post">
+                <form class="form-horizontal" th:object="${monitoring}" th:action="@{/monitoring/load}" method="post">
                     <div class="form-group">
+                        <input type="hidden" th:field="*{id}"/>
                         <label class="col-sm-2 control-label"></label>
                         <!--<input id="form1_submit" name="form1_submit" value="Load information" type="submit" class="btn btn-default"/>-->
                         <div class="col-sm-10">
-                            <input type="text" id="autocomplete-input" class="form-control" name="cryptoCurrencyName" placeholder="Start to type currency name"/>
+                            <input type="text" id="autocomplete-input" class="form-control" name="cryptoCurrencyName" placeholder="Start to type currency name (from 3 symbol)"/>
                         </div>
                     </div>
                 </form>
@@ -50,6 +51,7 @@
                     <input type="hidden" th:field="*{cryptoCurrency.priceBTC}"/>
                     <input type="hidden" th:field="*{cryptoCurrency.lastUpdated}"/>
                     <input type="hidden" th:field="*{cryptoCurrency.percentChange7d}"/>
+                    <input type="hidden" th:field="*{active}"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">CryptoCurrency Name:</label>
                         <div class="col-sm-10">
@@ -92,7 +94,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn icon-btn btn-success">Submit</button>
                     </div>
                 </form>
             </div>
