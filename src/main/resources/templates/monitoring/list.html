@@ -30,6 +30,7 @@
                     <th>Change (24h)</th>
                     <th>Monitor Condition</th>
                     <th>Condition Value</th>
+                    <th>Active</th>
                     <th>Edit</th>
                     <th>Delete</th>
                     </thead>
@@ -43,6 +44,7 @@
                         <td th:text="${monitoring.cryptoCurrency.percentChange24h} + '%'"></td>
                         <td th:text="${monitoring.monitoringCondition.description}"></td>
                         <td th:text="${monitoring.conditionValue}"></td>
+                        <td><input type="checkbox" name="active" th:checked="${monitoring.active}" disabled="true" /></td>
                         <td>
                             <p data-placement="top" data-toggle="tooltip" title="Edit">
                                 <a th:href="${'/monitoring/edit/' + monitoring.id}" class="btn btn-primary btn-xs" role="button"><span class="glyphicon glyphicon-pencil"></span></a>

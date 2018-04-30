@@ -30,7 +30,7 @@ public class MonitoringController {
     }
 
     @RequestMapping({"/list", "/", ""})
-    public String listMonitorings(Model model) {
+        public String listMonitorings(Model model) {
         model.addAttribute("monitorings", monitoringService.getAllUserMonitorings());
         return "monitoring/list";
     }
@@ -51,7 +51,7 @@ public class MonitoringController {
         monitoring.setActive(true);
         model.addAttribute(monitoring);
         model.addAttribute("monitoringConditions", MonitoringCondition.values());
-        return "/monitoring/monitoringform";
+        return "monitoring/monitoringform";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -59,12 +59,12 @@ public class MonitoringController {
         SecUserDetails secUserDetails = (SecUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         monitoring.setIdUser(secUserDetails.getUser().getId());
         monitoring.setUserEmail(secUserDetails.getUser().getEmail());
-        if (monitoring.getId().equals("")) monitoring.setId(null);
+        if (monitoring.getId() != null && monitoring.getId().equals("")) monitoring.setId(null);
         monitoringService.save(monitoring);
         return "redirect:/monitoring/list";
     }
 
-    @RequestMapping("/edit/{id}")
+        @RequestMapping("/edit/{id}")
     public String edit(@PathVariable String id, Model model){
         model.addAttribute("monitoring", monitoringService.getById(id));
         model.addAttribute("monitoringConditions", MonitoringCondition.values());
