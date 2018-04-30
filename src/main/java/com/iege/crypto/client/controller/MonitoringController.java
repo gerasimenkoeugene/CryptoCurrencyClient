@@ -64,7 +64,7 @@ public class MonitoringController {
         return "redirect:/monitoring/list";
     }
 
-        @RequestMapping("/edit/{id}")
+    @RequestMapping("/edit/{id}")
     public String edit(@PathVariable String id, Model model){
         model.addAttribute("monitoring", monitoringService.getById(id));
         model.addAttribute("monitoringConditions", MonitoringCondition.values());
