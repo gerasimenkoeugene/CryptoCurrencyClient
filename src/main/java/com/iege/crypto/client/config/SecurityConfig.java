@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private
+    CustomAuthenticationSuccessHandler customizeAuthenticationSuccessHandler;
+
+    @Autowired
     private SecUserDetailsService userDetailsService;
 
     @Override
@@ -22,10 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/activation/**").permitAll()
                 .antMatchers("/login/**").permitAll()
-//                .antMatchers("/monitoring/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login")
                 .permitAll()
                 .and()
@@ -33,14 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-//        auth.inMemoryAuthentication().withUser("admin").password("password").roles("ADMIN");
-//    }
-
     @Autowired
     public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService);
     }
+
 }
