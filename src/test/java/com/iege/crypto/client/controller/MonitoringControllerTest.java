@@ -34,11 +34,10 @@ public class MonitoringControllerTest {
     private MockMvc mockMvc;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(monitoringController).build();
-        Authentication auth = new UsernamePasswordAuthenticationToken(new SecUserDetails(new User("1","test","test","","",true)),null);
-
+        Authentication auth = new UsernamePasswordAuthenticationToken(new SecUserDetails(new User("1", "test", "test", "", "", true)), null);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
@@ -51,11 +50,11 @@ public class MonitoringControllerTest {
     }
 
     @Test
-    public void testNewMoitoring() throws Exception {
+    public void testNewMonitoring() throws Exception {
         mockMvc.perform(get("/monitoring/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("monitoring/monitoringform"))
-                .andExpect(model().attributeExists("monitoring","monitoringConditions"));
+                .andExpect(model().attributeExists("monitoring", "monitoringConditions"));
     }
 
     @Test
@@ -65,7 +64,7 @@ public class MonitoringControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(view().name("monitoring/monitoringform"))
-                .andExpect(model().attributeExists("monitoring","monitoringConditions"));
+                .andExpect(model().attributeExists("monitoring", "monitoringConditions"));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class MonitoringControllerTest {
         mockMvc.perform(get("/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("monitoring/monitoringform"))
-                .andExpect(model().attributeExists("monitoring","monitoringConditions"));
+                .andExpect(model().attributeExists("monitoring", "monitoringConditions"));
     }
 
     @Test

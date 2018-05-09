@@ -24,8 +24,7 @@ public class SecUserDetailsService implements UserDetailsService {
         } else if (!user.isActive()) {
             throw new DisabledException("The email with confirmation link was sent for " + userName);
         } else {
-            UserDetails details = new SecUserDetails(user);
-            return details;
+            return new SecUserDetails(user);
         }
     }
 }

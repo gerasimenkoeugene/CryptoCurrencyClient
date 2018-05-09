@@ -33,7 +33,7 @@ public class UserRegistrationControllerTest {
     private UserDTO userDTO;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userRegistrationController).build();
         userDTO = new UserDTO();
@@ -52,6 +52,7 @@ public class UserRegistrationControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(model().attributeExists("user"));
     }
+
     @Test
     public void testRegisterUserAccount() throws Exception {
         mockMvc.perform(post("/registration/"))
@@ -60,9 +61,9 @@ public class UserRegistrationControllerTest {
                 .andExpect(model().hasErrors());
 
         RequestBuilder request = post("/registration/")
-                .param("active", userDTO.isActive()+"")
+                .param("active", userDTO.isActive() + "")
                 .param("password", userDTO.getPassword())
-                .param("confirmPassword",userDTO.getConfirmPassword())
+                .param("confirmPassword", userDTO.getConfirmPassword())
                 .param("email", userDTO.getEmail())
                 .param("userName", userDTO.getUserName());
 

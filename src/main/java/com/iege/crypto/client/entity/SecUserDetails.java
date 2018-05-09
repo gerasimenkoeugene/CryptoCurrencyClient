@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class SecUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public SecUserDetails(User user) {
         this.user = user;

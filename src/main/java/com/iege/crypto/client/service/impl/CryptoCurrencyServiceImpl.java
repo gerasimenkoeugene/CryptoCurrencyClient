@@ -27,11 +27,13 @@ public class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
 
     @Override
     public CryptoCurrency getById(String id) {
+        if (cryptoCurrencies == null) cryptoCurrencies = Arrays.asList(restTemplate.getForEntity(restApiUrl + "/cryptocurrency", CryptoCurrency[].class).getBody());
         return cryptoCurrencies.stream().filter(cryptoCurrency -> cryptoCurrency.getId().equals(id)).findFirst().get();
     }
 
     @Override
     public CryptoCurrency getByName(String name) {
+        if (cryptoCurrencies == null) cryptoCurrencies = Arrays.asList(restTemplate.getForEntity(restApiUrl + "/cryptocurrency", CryptoCurrency[].class).getBody());
         return cryptoCurrencies.stream().filter(cryptoCurrency -> cryptoCurrency.getName().equals(name)).findFirst().get();
     }
 }
